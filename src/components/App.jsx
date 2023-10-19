@@ -34,10 +34,10 @@ export const App = () => {
     setFilter(ev.currentTarget.value);
   };
 
-  const filterContacts = () => {
-    const lowerFilter = filter.toLowerCase();
+  const handleFilterContacts = () => {
+    const normalizedFilter = filter.toLowerCase();
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(lowerFilter)
+      contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
@@ -45,7 +45,7 @@ export const App = () => {
     setContacts(contacts.filter(contact => contact.id !== id));
   };
 
-  const filteredContacts = filterContacts();
+  const filteredContacts = handleFilterContacts();
 
   return (
     <div className="container">
