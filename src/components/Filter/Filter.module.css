@@ -1,4 +1,4 @@
-.input {
+.filterinput {
   border: 0;
   outline: 0;
   color: rgb(60, 66, 87);
@@ -20,13 +20,13 @@
   transition-timing-function: ease, ease;
   transition-delay: 0s, 0s;
 }
-.input :focus {
+.filterinput :focus {
   box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px,
     rgb(58 151 212 / 36%) 0px 0px 0px 4px, rgb(0 0 0 / 0%) 0px 0px 0px 0px,
     rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px,
     rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px;
 }
-.labelFilter {
+.filterlabel {
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -1,17 +1,17 @@
-import { ContactForm } from './ContactsForm/ContactForm';
-import { useState } from 'react';
-import { ContactList } from './ContactsList/ContactList';
+import { useEffect, useState } from 'react';
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix';
-import { useEffect } from 'react';
 
 export const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    setContacts(JSON.parse(localStorage.getItem('contacts')));
+    const localContacts = localStorage.getItem('contacts');
+    if (localContacts) setContacts(JSON.parse(localContacts));
   }, []);
 
   useEffect(() => {
@@ -21,17 +21,26 @@ export const App = () => {
 
   const createContact = data => {
     if (contacts.some(contact => contact.name === data.name)) {
-      return Notify.warning(`Oops! ${data.name} is already in your list`);
+      return Notify.info(`${data.name} is already in your contacts`);
     }
+
     const newContact = {
       ...data,
       id: nanoid(),
     };
+
     setContacts([...contacts, newContact]);
+
+    Notify.success(`${data.name} has been successfully added to your contacts`);
   };
 
-  const onFilterChange = ev => {
-    setFilter(ev.currentTarget.value);
+  const onRemoveContact = contactId => {
+    setContacts(contacts.filter(contact => contact.id !== contactId));
+    Notify.success('The contact has been successfully removed');
+  };
+
+  const onFilterChange = evt => {
+    setFilter(evt.currentTarget.value);
   };
 
   const handleFilterContacts = () => {
@@ -41,25 +50,21 @@ export const App = () => {
     );
   };
 
-  const deleteContactFromList = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
-  };
-
   const filteredContacts = handleFilterContacts();
 
   return (
     <div className="container">
-      <h1>Phonebook</h1>
+      <h1 className="title head">Phonebook</h1>
       <ContactForm createContact={createContact} />
-      <h2>Contacts</h2>
-      <Filter onChange={onFilterChange} />
+      <h2 className="title">Contacts</h2>
+      <Filter value={filter} onChange={onFilterChange} />
       {contacts.length ? (
         <ContactList
           contacts={filteredContacts}
-          deleteContactFromList={deleteContactFromList}
+          onRemoveContact={onRemoveContact}
         />
       ) : (
-        <p>There are no contacts in your list</p>
+        <p className="">There are no contacts in your phoneboook</p>
       )}
     </div>
   );
